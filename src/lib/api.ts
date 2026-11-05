@@ -7,23 +7,31 @@ export async function fetchDashboardData(
   sheetUrl = DEFAULT_SHEET_CSV_URL,
   forceRefresh = false
 ): Promise<ApiResponse> {
-  const query = new URLSearchParams();
-  if (forceRefresh) query.set('force', 'true');
-  if (sheetUrl && sheetUrl !== DEFAULT_SHEET_CSV_URL) query.set('sheetUrl', sheetUrl);
+  const isStaticHost =
+    typeof window !== 'undefined' &&
+    (window.location.hostname.endsWith('github.io') ||
+      window.location.protocol === 'file:');
 
-  try {
-    const res = await fetch(`/api/badges?${query.toString()}`);
-    if (res.ok) {
-      const data: ApiResponse = await res.json();
-      if (data && data.records && data.records.length > 0) {
-        return data;
+  // If not on a static host, attempt the backend proxy route first
+  if (!isStaticHost) {
+    const query = new URLSearchParams();
+    if (forceRefresh) query.set('force', 'true');
+    if (sheetUrl && sheetUrl !== DEFAULT_SHEET_CSV_URL) query.set('sheetUrl', sheetUrl);
+
+    try {
+      const res = await fetch(`/api/badges?${query.toString()}`);
+      if (res.ok) {
+        const data: ApiResponse = await res.json();
+        if (data && data.records && data.records.length > 0) {
+          return data;
+        }
       }
+    } catch (err) {
+      console.warn('Backend proxy fetch failed, falling back to client-side parse:', err);
     }
-  } catch (err) {
-    console.warn('Backend proxy fetch failed, falling back to client-side parse:', err);
   }
 
-  // Client-side direct fallback attempt
+  // Client-side direct fetch from Google Sheets CSV (works directly on GitHub Pages with native CORS)
   try {
     const clientRes = await fetch(
       sheetUrl + (sheetUrl.includes('?') ? '&' : '?') + 'nocache=' + Date.now(),
@@ -43,7 +51,20 @@ export async function fetchDashboardData(
       }
     }
   } catch (clientErr) {
-    console.warn('Client-side direct fetch also failed, using fallback dataset:', clientErr);
+    console.warn('Client-side direct fetch failed, trying fallback dataset:', clientErr);
+  }
+
+  // If static fetch failed, try backend proxy as secondary fallback if not tried yet
+  if (isStaticHost) {
+    try {
+      const res = await fetch('/api/badges');
+      if (res.ok) {
+        const data: ApiResponse = await res.json();
+        if (data && data.records && data.records.length > 0) {
+          return data;
+        }
+      }
+    } catch {}
   }
 
   return buildApiResponse(FALLBACK_RECORDS, false, sheetUrl, 'Using cached baseline dataset');
@@ -306,6 +327,10 @@ function buildApiResponse(
 }
 
 export async function fetchCelebrationsApi(): Promise<Record<string, number>> {
+  if (typeof window !== 'undefined' && (window.location.hostname.endsWith('github.io') || window.location.protocol === 'file:')) {
+    // GitHub Pages is a static host; celebrations persist client-side in localStorage
+    return {};
+  }
   try {
     const res = await fetch(`/api/celebrations?_t=${Date.now()}`, {
       cache: 'no-store',
@@ -333,6 +358,10 @@ export function triggerCelebration(originX = 0.5, originY = 0.6) {
 }
 
 export async function sendCelebrationApi(earnerName: string): Promise<Record<string, number> | null> {
+  if (typeof window !== 'undefined' && (window.location.hostname.endsWith('github.io') || window.location.protocol === 'file:')) {
+    // On static GitHub Pages, cheers increment and persist locally in browser localStorage
+    return null;
+  }
   try {
     const res = await fetch('/api/celebrations', {
       method: 'POST',
