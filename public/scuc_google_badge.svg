@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <!-- Outer Rounded Blue Border & White Background -->
+  <rect x="8" y="8" width="384" height="384" rx="44" ry="44" fill="#FFFFFF" stroke="#1A73E8" stroke-width="16" />
+
+  <!-- Top "SCUC" with Google Colors -->
+  <g font-family="'Product Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="900" font-size="82" letter-spacing="-1">
+    <text x="56" y="112" fill="#EA4335">S</text>
+    <text x="126" y="112" fill="#4285F4">C</text>
+    <text x="202" y="112" fill="#34A853">U</text>
+    <text x="278" y="112" fill="#FBBC05">C</text>
+  </g>
+
+  <!-- Middle Solid Red Stripe -->
+  <rect x="16" y="150" width="368" height="82" fill="#EA4335" />
+
+  <!-- Bottom "Google" Brand -->
+  <g font-family="'Product Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="700" font-size="62" text-anchor="middle">
+    <text x="200" y="302">
+      <tspan fill="#4285F4">G</tspan>
+      <tspan fill="#EA4335">o</tspan>
+      <tspan fill="#FBBC05">o</tspan>
+      <tspan fill="#4285F4">g</tspan>
+      <tspan fill="#34A853">l</tspan>
+      <tspan fill="#EA4335">e</tspan>
+    </text>
+  </g>
+
+  <!-- Bottom "AI Series" Text -->
+  <text x="200" y="364" font-family="'Product Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="700" font-size="44" fill="#202124" text-anchor="middle" letter-spacing="0.5">
+    AI Series
+  </text>
+</svg>
