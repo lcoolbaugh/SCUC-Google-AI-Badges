@@ -7,13 +7,24 @@ import {
   GraduationCap,
   BookMarked,
   Code,
+  Shield,
+  ClipboardList,
+  SlidersHorizontal,
   Sparkles,
   School,
   Briefcase,
   Star
 } from 'lucide-react';
 import { EarnerProfile } from '../types';
-import { CAT_CODING, CAT_EDU, CAT_NOTEBOOK, CATEGORY_METADATA } from '../lib/constants';
+import {
+  CAT_ADAPT,
+  CAT_CITIZENS,
+  CAT_CODING,
+  CAT_EDU,
+  CAT_MATERIALS,
+  CAT_NOTEBOOK,
+  CATEGORY_METADATA
+} from '../lib/constants';
 import { triggerCelebration } from '../lib/api';
 
 interface EarnerDetailModalProps {
@@ -34,10 +45,13 @@ export const EarnerDetailModal: React.FC<EarnerDetailModalProps> = ({
   const uniqueCategories = new Set(profile.badges.map((b) => b.badge));
   const isTripleCrown = uniqueCategories.size >= 3;
 
-  const getBadgeIcon = (cat: string) => {
-    if (cat === CAT_EDU) return GraduationCap;
-    if (cat === CAT_NOTEBOOK) return BookMarked;
-    return Code;
+  const getBadgeVisual = (cat: string) => {
+    if (cat === CAT_EDU) return { icon: GraduationCap, iconBg: 'bg-blue-100 text-[#1a73e8]' };
+    if (cat === CAT_NOTEBOOK) return { icon: BookMarked, iconBg: 'bg-amber-100 text-[#b06000]' };
+    if (cat === CAT_CITIZENS) return { icon: Shield, iconBg: 'bg-red-100 text-[#d93025]' };
+    if (cat === CAT_MATERIALS) return { icon: ClipboardList, iconBg: 'bg-blue-100 text-[#1967d2]' };
+    if (cat === CAT_ADAPT) return { icon: SlidersHorizontal, iconBg: 'bg-orange-100 text-[#c26401]' };
+    return { icon: Code, iconBg: 'bg-emerald-100 text-[#188038]' };
   };
 
   return (
@@ -120,14 +134,14 @@ export const EarnerDetailModal: React.FC<EarnerDetailModalProps> = ({
 
           <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
             {profile.badges.map((b, idx) => {
-              const Icon = getBadgeIcon(b.badge);
+              const { icon: Icon, iconBg } = getBadgeVisual(b.badge);
               return (
                 <div
                   key={`${b.rawBadge}-${idx}`}
                   className="bg-gray-50 border border-gray-200 rounded-xl p-3.5 flex items-start justify-between gap-3"
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-blue-100 text-[#1a73e8] flex items-center justify-center shrink-0 mt-0.5">
+                    <div className={`w-9 h-9 rounded-xl ${iconBg} flex items-center justify-center shrink-0 mt-0.5`}>
                       <Icon className="w-5 h-5" />
                     </div>
                     <div>

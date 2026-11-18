@@ -272,24 +272,24 @@ export default function App() {
                 onSelectEarner={(profile) => setActiveEarnerProfile(profile)}
               />
 
-              {/* 3 Category Breakdown Section (Top 4 Campuses / Departments Per Category) */}
+              {/* Campus / Department Leaderboard Podium (Positioned on top above Badge Categories) */}
+              <CampusLeaderboard
+                campuses={data.stats.campusLeaderboard}
+                selectedCampus={selectedDepartment}
+                onSelectCampusFilter={(campusName) => {
+                  setSelectedDepartment(campusName);
+                  const el = document.getElementById('roster-section');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+              />
+
+              {/* Badge Category Breakdown Section (Top 4 Campuses / Departments Per Category) */}
               <CategoryBreakdown
                 stats={data.stats}
                 selectedCategory={selectedCategory}
                 onSelectCategoryFilter={(catKey) => {
                   setSelectedCategory(catKey);
                   // Smooth scroll to roster table
-                  const el = document.getElementById('roster-section');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
-              />
-
-              {/* Campus / Department Leaderboard */}
-              <CampusLeaderboard
-                campuses={data.stats.campusLeaderboard}
-                selectedCampus={selectedDepartment}
-                onSelectCampusFilter={(campusName) => {
-                  setSelectedDepartment(campusName);
                   const el = document.getElementById('roster-section');
                   if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}

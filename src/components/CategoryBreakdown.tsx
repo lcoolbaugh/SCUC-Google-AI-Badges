@@ -1,7 +1,25 @@
 import React from 'react';
-import { GraduationCap, BookMarked, Code, ExternalLink, Filter, Layers } from 'lucide-react';
+import {
+  GraduationCap,
+  BookMarked,
+  Code,
+  Shield,
+  ClipboardList,
+  SlidersHorizontal,
+  ExternalLink,
+  Filter,
+  Layers
+} from 'lucide-react';
 import { DashboardStats } from '../types';
-import { CAT_CODING, CAT_EDU, CAT_NOTEBOOK, CATEGORY_METADATA } from '../lib/constants';
+import {
+  CAT_ADAPT,
+  CAT_CITIZENS,
+  CAT_CODING,
+  CAT_EDU,
+  CAT_MATERIALS,
+  CAT_NOTEBOOK,
+  CATEGORY_METADATA
+} from '../lib/constants';
 
 interface CategoryBreakdownProps {
   stats: DashboardStats;
@@ -24,7 +42,7 @@ export const CategoryBreakdown: React.FC<CategoryBreakdownProps> = ({
       accentBorder: 'border-t-[#4285F4]',
       badgeColorClass: 'bg-[#4285F4]',
       barColorClass: 'bg-[#4285F4]',
-      iconBg: 'bg-blue-100 text-[#1a73e8]',
+      iconBg: 'bg-gradient-to-br from-[#4285F4] to-[#1967d2] text-white shadow-sm shadow-blue-300/60',
       counterText: 'text-[#1a73e8]'
     },
     {
@@ -36,7 +54,7 @@ export const CategoryBreakdown: React.FC<CategoryBreakdownProps> = ({
       accentBorder: 'border-t-[#FBBC05]',
       badgeColorClass: 'bg-[#f29900]',
       barColorClass: 'bg-[#FBBC05]',
-      iconBg: 'bg-amber-100 text-[#b06000]',
+      iconBg: 'bg-gradient-to-br from-[#FBBC05] to-[#f29900] text-amber-950 shadow-sm shadow-amber-300/60',
       counterText: 'text-[#b06000]'
     },
     {
@@ -48,18 +66,58 @@ export const CategoryBreakdown: React.FC<CategoryBreakdownProps> = ({
       accentBorder: 'border-t-[#34A853]',
       badgeColorClass: 'bg-[#34A853]',
       barColorClass: 'bg-[#34A853]',
-      iconBg: 'bg-emerald-100 text-[#188038]',
+      iconBg: 'bg-gradient-to-br from-[#34A853] to-[#188038] text-white shadow-sm shadow-emerald-300/60',
       counterText: 'text-[#188038]'
+    },
+    {
+      key: 'CITIZENS',
+      fullName: CAT_CITIZENS,
+      meta: CATEGORY_METADATA[CAT_CITIZENS],
+      info: stats.categories.citizens,
+      icon: Shield,
+      accentBorder: 'border-t-[#EA4335]',
+      badgeColorClass: 'bg-[#EA4335]',
+      barColorClass: 'bg-[#EA4335]',
+      iconBg: 'bg-gradient-to-br from-[#EA4335] to-[#c5221f] text-white shadow-sm shadow-red-300/60',
+      counterText: 'text-[#d93025]'
+    },
+    {
+      key: 'MATERIALS',
+      fullName: CAT_MATERIALS,
+      meta: CATEGORY_METADATA[CAT_MATERIALS],
+      info: stats.categories.materials,
+      icon: ClipboardList,
+      accentBorder: 'border-t-[#1967D2]',
+      badgeColorClass: 'bg-[#1967D2]',
+      barColorClass: 'bg-[#1967D2]',
+      iconBg: 'bg-gradient-to-br from-[#1967D2] to-[#174ea6] text-white shadow-sm shadow-blue-300/60',
+      counterText: 'text-[#1967D2]'
+    },
+    {
+      key: 'ADAPT',
+      fullName: CAT_ADAPT,
+      meta: CATEGORY_METADATA[CAT_ADAPT],
+      info: stats.categories.adapt,
+      icon: SlidersHorizontal,
+      accentBorder: 'border-t-[#E37400]',
+      badgeColorClass: 'bg-[#E37400]',
+      barColorClass: 'bg-[#E37400]',
+      iconBg: 'bg-gradient-to-br from-[#FBBC05] via-[#f9ab00] to-[#E37400] text-white shadow-sm shadow-orange-300/60',
+      counterText: 'text-[#c26401]'
     }
   ];
+
+  const activeCategoryMeta = categories.find((c) => c.key === selectedCategory);
 
   return (
     <section className="mb-8">
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#1a73e8] flex items-center justify-center">
-            <Layers className="w-5 h-5" />
+          <div className="p-[2px] rounded-xl bg-gradient-to-tr from-[#4285F4] via-[#EA4335] via-[#FBBC05] to-[#34A853] shadow-xs">
+            <div className="w-8 h-8 rounded-[10px] bg-white text-[#4285F4] flex items-center justify-center">
+              <Layers className="w-5 h-5" />
+            </div>
           </div>
           <div>
             <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
@@ -76,14 +134,14 @@ export const CategoryBreakdown: React.FC<CategoryBreakdownProps> = ({
             onClick={() => onSelectCategoryFilter('ALL')}
             className="text-xs font-bold text-[#1a73e8] hover:underline flex items-center gap-1 cursor-pointer"
           >
-            <span>Showing filtered category: {selectedCategory}</span>
+            <span>Showing filtered category: {activeCategoryMeta?.meta.shortName || selectedCategory}</span>
             <span className="font-bold underline ml-1">Clear</span>
           </button>
         )}
       </div>
 
-      {/* 3 Column Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* 3 Column Grid (2 rows of 3 cards on desktop) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map((cat) => {
           const Icon = cat.icon;
           const topList = cat.info?.top4 || [];

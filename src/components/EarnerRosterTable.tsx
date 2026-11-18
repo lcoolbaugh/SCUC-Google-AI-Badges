@@ -10,13 +10,24 @@ import {
   GraduationCap,
   BookMarked,
   Code,
+  Shield,
+  ClipboardList,
+  SlidersHorizontal,
   ShieldCheck,
   Award,
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
 import { BadgeRecord, EarnerProfile } from '../types';
-import { CAT_CODING, CAT_EDU, CAT_NOTEBOOK, CATEGORY_METADATA } from '../lib/constants';
+import {
+  CAT_ADAPT,
+  CAT_CITIZENS,
+  CAT_CODING,
+  CAT_EDU,
+  CAT_MATERIALS,
+  CAT_NOTEBOOK,
+  CATEGORY_METADATA
+} from '../lib/constants';
 
 interface EarnerRosterTableProps {
   records: BadgeRecord[];
@@ -58,6 +69,9 @@ export const EarnerRosterTable: React.FC<EarnerRosterTableProps> = ({
       if (selectedCategory === 'EDU') matchCat = item.badge === CAT_EDU;
       if (selectedCategory === 'NOTEBOOK') matchCat = item.badge === CAT_NOTEBOOK;
       if (selectedCategory === 'CODING') matchCat = item.badge === CAT_CODING;
+      if (selectedCategory === 'CITIZENS') matchCat = item.badge === CAT_CITIZENS;
+      if (selectedCategory === 'MATERIALS') matchCat = item.badge === CAT_MATERIALS;
+      if (selectedCategory === 'ADAPT') matchCat = item.badge === CAT_ADAPT;
 
       const matchDept = selectedDepartment === 'ALL' || item.department === selectedDepartment;
 
@@ -157,6 +171,30 @@ export const EarnerRosterTable: React.FC<EarnerRosterTableProps> = ({
         icon: BookMarked
       };
     }
+    if (badge === CAT_CITIZENS) {
+      return {
+        bg: 'bg-red-50',
+        text: 'text-[#d93025]',
+        border: 'border-red-200',
+        icon: Shield
+      };
+    }
+    if (badge === CAT_MATERIALS) {
+      return {
+        bg: 'bg-blue-50',
+        text: 'text-[#1967d2]',
+        border: 'border-blue-300',
+        icon: ClipboardList
+      };
+    }
+    if (badge === CAT_ADAPT) {
+      return {
+        bg: 'bg-orange-50',
+        text: 'text-[#c26401]',
+        border: 'border-orange-200',
+        icon: SlidersHorizontal
+      };
+    }
     return {
       bg: 'bg-emerald-50',
       text: 'text-[#188038]',
@@ -198,6 +236,9 @@ export const EarnerRosterTable: React.FC<EarnerRosterTableProps> = ({
             <option value="EDU">Gemini for Education</option>
             <option value="NOTEBOOK">Gemini for Notebook</option>
             <option value="CODING">Vibe Coding with Gemini</option>
+            <option value="CITIZENS">Empowering Digital Citizens</option>
+            <option value="MATERIALS">Creating Classroom-Ready Instructional Materials</option>
+            <option value="ADAPT">Adapt (Level) Materials</option>
           </select>
 
           {/* Campus / Department Select */}

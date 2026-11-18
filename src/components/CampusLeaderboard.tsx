@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Trophy, Flame, ChevronDown, ChevronUp, LayoutGrid, List, Sparkles } from 'lucide-react';
+import { Trophy, Flame, ChevronDown, ChevronUp, LayoutGrid, List, Sparkles, Crown, Award, Medal } from 'lucide-react';
 import { CampusLeaderboardItem } from '../types';
 import { triggerCelebration } from '../lib/api';
 
@@ -268,8 +268,12 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 border-b border-gray-100 pb-4">
         <div className="flex items-start sm:items-center gap-3">
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 via-yellow-400 to-amber-500 text-amber-950 flex items-center justify-center shrink-0 shadow-md shadow-amber-300/40 border border-yellow-200">
-            <Trophy className="w-6 h-6 fill-amber-950 text-amber-950" />
+          {/* Vibrant 4-Color Google Spectral Trophy Badge */}
+          <div className="p-[2.5px] rounded-2xl bg-gradient-to-tr from-[#4285F4] via-[#EA4335] via-[#FBBC05] to-[#34A853] shadow-md shrink-0">
+            <div className="w-11 h-11 rounded-[14px] bg-gradient-to-br from-[#FBBC05] via-[#fdd663] to-[#f9ab00] text-amber-950 flex items-center justify-center relative">
+              <Trophy className="w-6 h-6 text-[#9a5700] fill-[#fff4cc] drop-shadow-2xs" />
+              <Sparkles className="w-3 h-3 text-[#EA4335] fill-[#EA4335] absolute top-1.5 right-1.5" />
+            </div>
           </div>
           <div>
             <h3 className="text-xl font-black text-gray-900 tracking-tight flex items-center gap-2">
@@ -293,7 +297,7 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
               }`}
               title="Show Olympic podium view"
             >
-              <LayoutGrid className="w-3.5 h-3.5" />
+              <LayoutGrid className={`w-3.5 h-3.5 ${viewMode === 'podium' ? 'text-[#4285F4]' : ''}`} />
               <span>Podium</span>
             </button>
             <button
@@ -305,14 +309,14 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
               }`}
               title="Show full details table view"
             >
-              <List className="w-3.5 h-3.5" />
+              <List className={`w-3.5 h-3.5 ${viewMode === 'table' ? 'text-[#34A853]' : ''}`} />
               <span>Table</span>
             </button>
           </div>
 
           {/* Live Standings Pill */}
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-orange-50 to-amber-50 border border-amber-300 text-orange-950 text-xs font-black shadow-2xs">
-            <Flame className="w-4 h-4 text-orange-500 fill-orange-500 animate-pulse" />
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-emerald-50 via-yellow-50 to-red-50 border border-[#34A853]/40 text-gray-900 text-xs font-black shadow-2xs">
+            <Flame className="w-4 h-4 text-[#EA4335] fill-[#FBBC05] animate-pulse" />
             <span>Live Standings</span>
           </div>
         </div>
@@ -337,23 +341,23 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
             </div>
           )}
 
-          {/* 3-Column Bright Podium Grid: 2nd (left), 1st (center, elevated), 3rd (right) */}
+          {/* 3-Column Bright Google-Palette Podium Grid: 2nd (left), 1st (center, elevated), 3rd (right) */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 items-end pt-3 pb-2">
-            {/* Left Column (2nd Place OR Co-Leader if tied for 1st) */}
+            {/* Left Column (2nd Place: Google Blue #4285F4 OR Co-Leader Gold if tied for 1st) */}
             {secondPlace ? (
               <div
                 onClick={() => {
                   if (secondPlace.rank === 1) triggerCelebration();
                   onSelectCampusFilter(selectedCampus === secondPlace.name ? 'ALL' : secondPlace.name);
                 }}
-                className={`order-2 md:order-1 rounded-2xl border-2 transition-all p-6 flex flex-col items-center justify-between text-center min-h-[280px] cursor-pointer hover:shadow-xl ${
+                className={`order-2 md:order-1 rounded-2xl border-2 transition-all p-6 flex flex-col items-center justify-between text-center min-h-[285px] cursor-pointer hover:shadow-xl relative overflow-hidden ${
                   secondPlace.rank === 1
                     ? selectedCampus === secondPlace.name
-                      ? 'bg-gradient-to-b from-amber-100/90 via-yellow-50/70 to-white border-amber-400 ring-4 ring-amber-300 shadow-xl'
-                      : 'bg-gradient-to-b from-amber-50/80 via-yellow-50/40 to-white border-amber-300 shadow-md hover:border-amber-400'
+                      ? 'bg-gradient-to-b from-[#FBBC05]/25 via-yellow-50/80 to-white border-[#FBBC05] ring-4 ring-yellow-200 shadow-xl'
+                      : 'bg-gradient-to-b from-[#FBBC05]/15 via-yellow-50/40 to-white border-[#FBBC05]/70 shadow-md hover:border-[#FBBC05]'
                     : selectedCampus === secondPlace.name
-                    ? 'bg-gradient-to-b from-blue-100/90 via-sky-50/60 to-white border-blue-500 ring-4 ring-blue-200 shadow-xl'
-                    : 'bg-gradient-to-b from-blue-50/60 via-slate-50/40 to-white border-blue-200/90 hover:border-blue-400 shadow-md'
+                    ? 'bg-gradient-to-b from-[#4285F4]/20 via-blue-50/70 to-white border-[#4285F4] ring-4 ring-blue-200 shadow-xl'
+                    : 'bg-gradient-to-b from-[#4285F4]/12 via-blue-50/40 to-white border-[#4285F4]/45 hover:border-[#4285F4] shadow-md'
                 }`}
                 title={
                   secondPlace.isTied
@@ -364,22 +368,25 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
                 {/* Medal Header */}
                 <div className="flex flex-col items-center mb-3">
                   {secondPlace.rank === 1 ? (
-                    /* Co-Leader Radiant Gold Crown Medal */
-                    <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-amber-500 via-yellow-300 to-amber-400 shadow-md shadow-amber-300/50 flex flex-col items-center justify-center border-2 border-yellow-200">
-                      <span className="text-xs leading-none -mt-1 drop-shadow">👑</span>
-                      <span className="text-sm font-black text-amber-950 font-mono tracking-tight leading-none">
-                        {secondPlace.rankLabel}
-                      </span>
+                    /* Co-Leader Radiant Gold Crown Medal with Google 4-Color Ring */
+                    <div className="p-[3px] rounded-full bg-gradient-to-tr from-[#4285F4] via-[#EA4335] via-[#FBBC05] to-[#34A853] shadow-md">
+                      <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-[#f9ab00] via-[#fdd663] to-[#FBBC05] flex flex-col items-center justify-center border-2 border-white">
+                        <Crown className="w-4 h-4 text-[#9a5700] fill-[#fff4cc] -mb-0.5" />
+                        <span className="text-xs font-black text-amber-950 font-mono tracking-tight leading-none">
+                          {secondPlace.rankLabel}
+                        </span>
+                      </div>
                     </div>
                   ) : (
-                    /* Bright Silver Medal with Royal Blue Ribbon */
+                    /* Bright Google Blue Medal with Blue & Yellow Ribbon */
                     <>
                       <div className="flex gap-1 -mb-1.5 z-0">
-                        <div className="w-3 h-4 bg-blue-600 rounded-t-xs -rotate-12 shadow-2xs" />
-                        <div className="w-3 h-4 bg-blue-500 rounded-t-xs rotate-12 shadow-2xs" />
+                        <div className="w-3.5 h-4 bg-[#4285F4] rounded-t-xs -rotate-12 shadow-2xs" />
+                        <div className="w-3.5 h-4 bg-[#FBBC05] rounded-t-xs rotate-12 shadow-2xs" />
                       </div>
-                      <div className="w-13 h-13 rounded-full bg-gradient-to-tr from-slate-200 via-white to-slate-300 shadow-md shadow-blue-200/50 flex items-center justify-center border-2 border-blue-300 z-10">
-                        <span className="text-sm font-black text-slate-800 font-mono">
+                      <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-[#1967d2] via-[#4285F4] to-[#669df6] shadow-md shadow-blue-300/60 flex flex-col items-center justify-center border-3 border-white ring-2 ring-[#4285F4]/40 z-10">
+                        <Award className="w-4 h-4 text-[#FBBC05] fill-[#FBBC05] -mb-0.5" />
+                        <span className="text-xs font-black text-white font-mono tracking-tight leading-none">
                           {secondPlace.rankLabel}
                         </span>
                       </div>
@@ -392,14 +399,14 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
                     <span
                       className={`text-[10px] font-black uppercase tracking-wider mb-2 px-2.5 py-0.5 rounded-full border shadow-2xs ${
                         secondPlace.rank === 1
-                          ? 'text-amber-950 bg-amber-200 border-amber-400'
-                          : 'text-blue-950 bg-blue-100 border-blue-300'
+                          ? 'text-amber-950 bg-[#FBBC05]/30 border-[#FBBC05]'
+                          : 'text-[#1967d2] bg-[#4285F4]/15 border-[#4285F4]/40'
                       }`}
                     >
                       🤝 Even &amp; Tied ({secondPlace.rankLabel})
                     </span>
                   ) : (
-                    <span className="text-[10px] font-black uppercase tracking-wider text-blue-800 bg-blue-100/70 border border-blue-200 px-2.5 py-0.5 rounded-full mb-2">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-[#1967d2] bg-[#4285F4]/15 border border-[#4285F4]/35 px-2.5 py-0.5 rounded-full mb-2">
                       2nd Place
                     </span>
                   )}
@@ -408,8 +415,8 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
                     {secondPlace.name}
                   </h4>
 
-                  {/* Clean Mascot Badge with NO cities or campus-wide strings */}
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black shadow-2xs mt-2 border border-blue-200 bg-white/90 text-blue-900">
+                  {/* Clean Mascot Badge */}
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black shadow-2xs mt-2 border border-[#4285F4]/30 bg-white text-[#1967d2]">
                     <span className="text-sm">{secondMascot.emoji}</span>
                     <span>{secondMascot.mascot}</span>
                   </div>
@@ -419,8 +426,8 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
                 <div
                   className={`mt-4 border font-black text-xs px-4 py-2 rounded-full shadow-md transition-transform hover:scale-105 ${
                     secondPlace.rank === 1
-                      ? 'bg-gradient-to-r from-amber-400 to-yellow-400 border-amber-300 text-amber-950'
-                      : 'bg-gradient-to-r from-blue-500 to-indigo-600 border-blue-400 text-white'
+                      ? 'bg-gradient-to-r from-[#FBBC05] to-[#f9ab00] border-amber-300 text-amber-950'
+                      : 'bg-gradient-to-r from-[#4285F4] to-[#1a73e8] border-blue-400 text-white'
                   }`}
                 >
                   {secondPlace.totalBadges} Badges ({secondPlace.earnersCount} Staff)
@@ -430,8 +437,8 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
                 <div
                   className={`w-24 h-2 rounded-full mx-auto mt-3 shadow-xs ${
                     secondPlace.rank === 1
-                      ? 'bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-400'
-                      : 'bg-gradient-to-r from-blue-400 to-indigo-400'
+                      ? 'bg-gradient-to-r from-[#FBBC05] via-[#EA4335] to-[#FBBC05]'
+                      : 'bg-gradient-to-r from-[#4285F4] to-[#669df6]'
                   }`}
                 />
               </div>
@@ -439,17 +446,17 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
               <div className="order-2 md:order-1" />
             )}
 
-            {/* Center Column: 1st Place (Elevated, Bright Gold Glow, Crown Medal) */}
+            {/* Center Column: 1st Place (Elevated, Google Yellow #FBBC05 + 4-Color Google Spectral Ring) */}
             {firstPlace && (
               <div
                 onClick={() => {
                   triggerCelebration();
                   onSelectCampusFilter(selectedCampus === firstPlace.name ? 'ALL' : firstPlace.name);
                 }}
-                className={`order-1 md:order-2 rounded-2xl border-3 transition-all p-7 lg:p-8 flex flex-col items-center justify-between text-center min-h-[320px] cursor-pointer hover:shadow-2xl md:-translate-y-3 relative bg-gradient-to-b from-amber-100 via-yellow-50/70 to-white ${
+                className={`order-1 md:order-2 rounded-2xl border-3 transition-all p-7 lg:p-8 flex flex-col items-center justify-between text-center min-h-[325px] cursor-pointer hover:shadow-2xl md:-translate-y-3 relative overflow-hidden bg-gradient-to-b from-[#FBBC05]/25 via-yellow-50/70 to-white ${
                   selectedCampus === firstPlace.name
-                    ? 'border-amber-400 ring-4 ring-amber-300 shadow-2xl shadow-amber-300/60'
-                    : 'border-amber-400 shadow-xl shadow-amber-200/70 hover:border-amber-500'
+                    ? 'border-[#FBBC05] ring-4 ring-yellow-300 shadow-2xl shadow-amber-300/60'
+                    : 'border-[#FBBC05] shadow-xl shadow-amber-200/70 hover:border-[#f9ab00]'
                 }`}
                 title={
                   firstPlace.isTied
@@ -457,26 +464,32 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
                     : 'District Leader! Click to celebrate and filter roster'
                 }
               >
-                {/* Luminous Glow Ambient Accent */}
-                <div className="absolute inset-0 bg-gradient-to-b from-amber-200/30 via-yellow-100/20 to-transparent rounded-2xl pointer-events-none" />
+                {/* Google 4-Color Spectral Top Ribbon */}
+                <div className="h-1.5 w-full bg-gradient-to-r from-[#4285F4] via-[#EA4335] via-[#FBBC05] to-[#34A853] absolute top-0 left-0 right-0" />
 
-                {/* Gleaming 3D Golden Crown Medal */}
-                <div className="flex flex-col items-center mb-2 relative z-10">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-amber-500 via-yellow-300 to-amber-400 shadow-lg shadow-amber-300/60 flex flex-col items-center justify-center border-3 border-yellow-200 relative">
-                    <span className="text-sm leading-none -mt-1 drop-shadow">👑</span>
-                    <span className="text-base font-black text-amber-950 font-mono tracking-tight leading-none drop-shadow-2xs">
-                      {firstPlace.rankLabel}
-                    </span>
+                {/* Luminous Glow Ambient Accent */}
+                <div className="absolute inset-0 bg-gradient-to-b from-[#FBBC05]/15 via-yellow-100/20 to-transparent rounded-2xl pointer-events-none" />
+
+                {/* Gleaming Golden Crown Medal inside Google 4-Color Halo */}
+                <div className="flex flex-col items-center mb-2 relative z-10 mt-1">
+                  <div className="p-[3.5px] rounded-full bg-gradient-to-tr from-[#4285F4] via-[#EA4335] via-[#FBBC05] to-[#34A853] shadow-lg shadow-amber-300/60">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#f9ab00] via-[#fdd663] to-[#FBBC05] flex flex-col items-center justify-center border-2 border-white">
+                      <Crown className="w-5 h-5 text-[#9a5700] fill-[#fff4cc] -mb-0.5 drop-shadow-2xs" />
+                      <span className="text-sm font-black text-amber-950 font-mono tracking-tight leading-none">
+                        {firstPlace.rankLabel}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
                 <div className="flex-1 flex flex-col items-center justify-center my-2 relative z-10">
-                  <span className="text-[11px] font-black uppercase tracking-wider text-amber-950 bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-200 px-3.5 py-0.5 rounded-full border border-amber-400 shadow-2xs mb-2">
-                    {firstPlace.isTied ? '⭐ CO-DISTRICT LEADER (TIED) ⭐' : '👑 DISTRICT LEADER 👑'}
+                  <span className="text-[11px] font-black uppercase tracking-wider text-amber-950 bg-gradient-to-r from-[#FBBC05]/40 via-[#fdd663] to-[#FBBC05]/40 px-3.5 py-0.5 rounded-full border border-[#FBBC05] shadow-2xs mb-2 inline-flex items-center gap-1">
+                    <Trophy className="w-3 h-3 text-[#EA4335] fill-[#FBBC05]" />
+                    <span>{firstPlace.isTied ? 'CO-DISTRICT LEADER (TIED)' : 'DISTRICT LEADER'}</span>
                   </span>
 
                   {firstPlace.isTied && (
-                    <span className="mb-2 text-[10px] bg-amber-200/90 text-amber-950 border border-amber-400 px-2.5 py-0.5 rounded-full font-black uppercase inline-flex items-center gap-1 shadow-2xs">
+                    <span className="mb-2 text-[10px] bg-amber-100 text-amber-950 border border-[#FBBC05] px-2.5 py-0.5 rounded-full font-black uppercase inline-flex items-center gap-1 shadow-2xs">
                       🤝 Even &amp; Tied for 1st
                     </span>
                   )}
@@ -485,34 +498,34 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
                     {firstPlace.name}
                   </h4>
 
-                  {/* Clean Mascot Badge with NO cities or campus-wide strings */}
-                  <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black shadow-2xs mt-2 border border-amber-300 bg-white/95 text-amber-950">
+                  {/* Clean Mascot Badge */}
+                  <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black shadow-2xs mt-2 border border-[#FBBC05] bg-white text-amber-950">
                     <span className="text-sm">{firstMascot.emoji}</span>
                     <span>{firstMascot.mascot}</span>
                   </div>
                 </div>
 
-                {/* 1st Place Bright Gold Stat Pill */}
-                <div className="mt-4 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-400 hover:from-amber-300 hover:to-yellow-300 text-amber-950 font-black text-xs lg:text-sm px-5 py-2 rounded-full shadow-md shadow-amber-200 border border-amber-300 relative z-10 flex items-center gap-1.5 transition-transform hover:scale-105">
-                  <Sparkles className="w-4 h-4 text-amber-900 fill-amber-700" />
+                {/* 1st Place Bright Google Yellow Stat Pill */}
+                <div className="mt-4 bg-gradient-to-r from-[#FBBC05] via-[#fdd663] to-[#f9ab00] hover:from-[#fdd663] hover:to-[#FBBC05] text-amber-950 font-black text-xs lg:text-sm px-5 py-2 rounded-full shadow-md shadow-amber-200 border border-[#f9ab00] relative z-10 flex items-center gap-1.5 transition-transform hover:scale-105">
+                  <Sparkles className="w-4 h-4 text-[#EA4335] fill-[#EA4335]" />
                   <span>
                     {firstPlace.totalBadges} Badges ({firstPlace.earnersCount} Staff)
                   </span>
                 </div>
 
-                {/* Pedestal Base Bar */}
-                <div className="w-28 h-2.5 rounded-full bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-400 mx-auto mt-3 shadow-xs" />
+                {/* Google 4-Color Pedestal Base Bar */}
+                <div className="w-32 h-2.5 rounded-full bg-gradient-to-r from-[#4285F4] via-[#EA4335] via-[#FBBC05] to-[#34A853] mx-auto mt-3 shadow-xs relative z-10" />
               </div>
             )}
 
-            {/* Right Column: 3rd Place (Warm Coral/Bronze Gradient) */}
+            {/* Right Column: 3rd Place (Google Green #34A853 with Red/Yellow accents) */}
             {thirdPlace ? (
               <div
                 onClick={() => onSelectCampusFilter(selectedCampus === thirdPlace.name ? 'ALL' : thirdPlace.name)}
-                className={`order-3 rounded-2xl border-2 transition-all p-6 flex flex-col items-center justify-between text-center min-h-[280px] cursor-pointer hover:shadow-xl ${
+                className={`order-3 rounded-2xl border-2 transition-all p-6 flex flex-col items-center justify-between text-center min-h-[285px] cursor-pointer hover:shadow-xl ${
                   selectedCampus === thirdPlace.name
-                    ? 'bg-gradient-to-b from-orange-100/90 via-amber-50/60 to-white border-orange-500 ring-4 ring-orange-200 shadow-xl'
-                    : 'bg-gradient-to-b from-orange-50/70 via-amber-50/40 to-white border-orange-300/90 hover:border-orange-400 shadow-md'
+                    ? 'bg-gradient-to-b from-[#34A853]/20 via-emerald-50/70 to-white border-[#34A853] ring-4 ring-emerald-200 shadow-xl'
+                    : 'bg-gradient-to-b from-[#34A853]/12 via-emerald-50/40 to-white border-[#34A853]/45 hover:border-[#34A853] shadow-md'
                 }`}
                 title={
                   thirdPlace.isTied
@@ -520,14 +533,15 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
                     : 'Click to filter earner roster by this campus'
                 }
               >
-                {/* Bronze Medal with Ribbon */}
+                {/* Google Green Medal with Red & Yellow Ribbons */}
                 <div className="flex flex-col items-center mb-3">
                   <div className="flex gap-1 -mb-1.5 z-0">
-                    <div className="w-3 h-4 bg-amber-700 rounded-t-xs -rotate-12 shadow-2xs" />
-                    <div className="w-3 h-4 bg-orange-600 rounded-t-xs rotate-12 shadow-2xs" />
+                    <div className="w-3.5 h-4 bg-[#EA4335] rounded-t-xs -rotate-12 shadow-2xs" />
+                    <div className="w-3.5 h-4 bg-[#FBBC05] rounded-t-xs rotate-12 shadow-2xs" />
                   </div>
-                  <div className="w-13 h-13 rounded-full bg-gradient-to-tr from-amber-200 via-orange-100 to-amber-300 shadow-md shadow-orange-200/50 flex items-center justify-center border-2 border-orange-300 z-10">
-                    <span className="text-sm font-black text-amber-950 font-mono">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-[#188038] via-[#34A853] to-[#5bb974] shadow-md shadow-emerald-300/60 flex flex-col items-center justify-center border-3 border-white ring-2 ring-[#34A853]/40 z-10">
+                    <Medal className="w-4 h-4 text-[#FBBC05] fill-[#FBBC05] -mb-0.5" />
+                    <span className="text-xs font-black text-white font-mono tracking-tight leading-none">
                       {thirdPlace.rankLabel}
                     </span>
                   </div>
@@ -535,11 +549,11 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
 
                 <div className="flex-1 flex flex-col items-center justify-center my-2">
                   {thirdPlace.isTied ? (
-                    <span className="text-[10px] font-black uppercase tracking-wider text-orange-950 bg-orange-200 border border-orange-400 px-2.5 py-0.5 rounded-full mb-2 shadow-2xs">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-[#188038] bg-[#34A853]/15 border border-[#34A853]/40 px-2.5 py-0.5 rounded-full mb-2 shadow-2xs">
                       🤝 Even &amp; Tied ({thirdPlace.rankLabel})
                     </span>
                   ) : (
-                    <span className="text-[10px] font-black uppercase tracking-wider text-orange-900 bg-orange-100/80 border border-orange-200 px-2.5 py-0.5 rounded-full mb-2">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-[#188038] bg-[#34A853]/15 border border-[#34A853]/35 px-2.5 py-0.5 rounded-full mb-2">
                       3rd Place
                     </span>
                   )}
@@ -548,20 +562,20 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
                     {thirdPlace.name}
                   </h4>
 
-                  {/* Clean Mascot Badge with NO cities or campus-wide strings */}
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black shadow-2xs mt-2 border border-orange-200 bg-white/90 text-orange-950">
+                  {/* Clean Mascot Badge */}
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black shadow-2xs mt-2 border border-[#34A853]/30 bg-white text-[#188038]">
                     <span className="text-sm">{thirdMascot.emoji}</span>
                     <span>{thirdMascot.mascot}</span>
                   </div>
                 </div>
 
                 {/* Stat Pill */}
-                <div className="mt-4 bg-gradient-to-r from-orange-500 to-amber-600 border border-orange-400 text-white font-black text-xs px-4 py-2 rounded-full shadow-md shadow-orange-200 transition-transform hover:scale-105">
+                <div className="mt-4 bg-gradient-to-r from-[#34A853] to-[#188038] border border-emerald-400 text-white font-black text-xs px-4 py-2 rounded-full shadow-md shadow-emerald-200 transition-transform hover:scale-105">
                   {thirdPlace.totalBadges} Badges ({thirdPlace.earnersCount} Staff)
                 </div>
 
                 {/* Pedestal Base Bar */}
-                <div className="w-20 h-2 rounded-full bg-gradient-to-r from-orange-400 to-amber-400 mx-auto mt-3 shadow-xs" />
+                <div className="w-20 h-2 rounded-full bg-gradient-to-r from-[#34A853] to-[#5bb974] mx-auto mt-3 shadow-xs" />
               </div>
             ) : (
               <div className="order-3" />
@@ -601,14 +615,28 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
                     const isSelected = selectedCampus === c.name;
                     const mascot = getCampusMascotInfo(c.name);
 
-                    // Cycle bright badge accent colors for remaining schools
+                    // Cycle strictly through the 4 Google brand colors
                     const colorSchemes = [
-                      { rankBg: 'bg-emerald-100 text-emerald-800 border-emerald-300' },
-                      { rankBg: 'bg-purple-100 text-purple-800 border-purple-300' },
-                      { rankBg: 'bg-sky-100 text-sky-800 border-sky-300' },
-                      { rankBg: 'bg-rose-100 text-rose-800 border-rose-300' },
-                      { rankBg: 'bg-amber-100 text-amber-800 border-amber-300' },
-                      { rankBg: 'bg-indigo-100 text-indigo-800 border-indigo-300' }
+                      {
+                        rankBg: 'bg-[#4285F4] text-white border-[#1967d2]',
+                        cardBorder: 'border-l-4 border-l-[#4285F4]',
+                        badgeBg: 'text-[#1967d2] bg-blue-50 border-blue-200'
+                      },
+                      {
+                        rankBg: 'bg-[#EA4335] text-white border-[#c5221f]',
+                        cardBorder: 'border-l-4 border-l-[#EA4335]',
+                        badgeBg: 'text-[#c5221f] bg-red-50 border-red-200'
+                      },
+                      {
+                        rankBg: 'bg-[#FBBC05] text-amber-950 border-[#f29900]',
+                        cardBorder: 'border-l-4 border-l-[#FBBC05]',
+                        badgeBg: 'text-amber-900 bg-amber-50 border-amber-200'
+                      },
+                      {
+                        rankBg: 'bg-[#34A853] text-white border-[#188038]',
+                        cardBorder: 'border-l-4 border-l-[#34A853]',
+                        badgeBg: 'text-[#188038] bg-emerald-50 border-emerald-200'
+                      }
                     ];
                     const scheme = colorSchemes[index % colorSchemes.length];
 
@@ -616,7 +644,7 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
                       <div
                         key={c.name}
                         onClick={() => onSelectCampusFilter(isSelected ? 'ALL' : c.name)}
-                        className={`p-3.5 rounded-xl border-2 transition-all cursor-pointer flex items-center justify-between gap-3 ${
+                        className={`p-3.5 rounded-xl border-2 transition-all cursor-pointer flex items-center justify-between gap-3 ${scheme.cardBorder} ${
                           isSelected
                             ? 'bg-blue-50 border-blue-500 shadow-md ring-2 ring-blue-200'
                             : 'bg-white hover:bg-gray-50 border-gray-200 hover:border-gray-300 shadow-2xs'
@@ -646,7 +674,7 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
                         </div>
 
                         <div className="text-right shrink-0">
-                          <span className="text-xs font-black text-[#1a73e8] bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-200 shadow-2xs">
+                          <span className={`text-xs font-black px-2.5 py-1 rounded-lg border shadow-2xs ${scheme.badgeBg}`}>
                             {c.totalBadges} badges
                           </span>
                           <span className="block text-[10px] text-gray-500 font-bold mt-1">
@@ -684,6 +712,9 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
                 const eduPct = Math.round((campus.eduCount / total) * 100);
                 const notebookPct = Math.round((campus.notebookCount / total) * 100);
                 const codingPct = Math.round((campus.codingCount / total) * 100);
+                const citizensPct = Math.round(((campus.citizensCount || 0) / total) * 100);
+                const materialsPct = Math.round(((campus.materialsCount || 0) / total) * 100);
+                const adaptPct = Math.round(((campus.adaptCount || 0) / total) * 100);
 
                 return (
                   <tr
@@ -748,7 +779,7 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
                         {campus.earnersCount}
                       </span>
                     </td>
-                    <td className="p-3.5 min-w-[200px]">
+                    <td className="p-3.5 min-w-[220px]">
                       <div className="flex items-center gap-2">
                         <div className="w-full bg-gray-200 h-2.5 rounded-full overflow-hidden flex">
                           {campus.eduCount > 0 && (
@@ -772,13 +803,52 @@ export const CampusLeaderboard: React.FC<CampusLeaderboardProps> = ({
                               title={`Vibe Coding: ${campus.codingCount}`}
                             />
                           )}
+                          {(campus.citizensCount || 0) > 0 && (
+                            <div
+                              style={{ width: `${citizensPct}%` }}
+                              className="bg-[#EA4335] h-full"
+                              title={`Empowering Digital Citizens: ${campus.citizensCount}`}
+                            />
+                          )}
+                          {(campus.materialsCount || 0) > 0 && (
+                            <div
+                              style={{ width: `${materialsPct}%` }}
+                              className="bg-[#1967D2] h-full"
+                              title={`Classroom-Ready Instructional Materials: ${campus.materialsCount}`}
+                            />
+                          )}
+                          {(campus.adaptCount || 0) > 0 && (
+                            <div
+                              style={{ width: `${adaptPct}%` }}
+                              className="bg-[#E37400] h-full"
+                              title={`Adapt (Level) Materials: ${campus.adaptCount}`}
+                            />
+                          )}
                         </div>
-                        <div className="flex items-center gap-1.5 text-[11px] font-mono shrink-0 font-bold">
+                        <div className="flex items-center gap-1 text-[11px] font-mono shrink-0 font-bold">
                           <span className="text-[#4285F4]" title="Education badges">{campus.eduCount}</span>
                           <span className="text-gray-300">/</span>
                           <span className="text-[#b06000]" title="Notebook badges">{campus.notebookCount}</span>
                           <span className="text-gray-300">/</span>
                           <span className="text-[#188038]" title="Vibe Coding badges">{campus.codingCount}</span>
+                          {((campus.citizensCount || 0) > 0 ||
+                            (campus.materialsCount || 0) > 0 ||
+                            (campus.adaptCount || 0) > 0) && (
+                            <>
+                              <span className="text-gray-300">/</span>
+                              <span className="text-[#d93025]" title="Empowering Digital Citizens badges">
+                                {campus.citizensCount || 0}
+                              </span>
+                              <span className="text-gray-300">/</span>
+                              <span className="text-[#1967d2]" title="Classroom-Ready Materials badges">
+                                {campus.materialsCount || 0}
+                              </span>
+                              <span className="text-gray-300">/</span>
+                              <span className="text-[#c26401]" title="Adapt (Level) Materials badges">
+                                {campus.adaptCount || 0}
+                              </span>
+                            </>
+                          )}
                         </div>
                       </div>
                     </td>

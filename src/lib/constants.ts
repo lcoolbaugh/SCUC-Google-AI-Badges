@@ -3,6 +3,9 @@ import { BadgeCategoryType, BadgeRecord } from '../types';
 export const CAT_EDU: BadgeCategoryType = 'Introduction to Gemini for Education';
 export const CAT_NOTEBOOK: BadgeCategoryType = 'Introduction to Gemini for Notebook';
 export const CAT_CODING: BadgeCategoryType = 'Introduction to Vibe Coding with Gemini';
+export const CAT_CITIZENS: BadgeCategoryType = 'Empowering Digital Citizens';
+export const CAT_MATERIALS: BadgeCategoryType = 'Creating Classroom-Ready Instructional Materials';
+export const CAT_ADAPT: BadgeCategoryType = 'Adapt (Level) Materials';
 
 export const DEFAULT_SHEET_CSV_URL =
   'https://docs.google.com/spreadsheets/d/14RGvXzzk9M0_7DdcaDB_4jcI7ubWijgKzQjnrNtJd98/export?format=csv';
@@ -51,6 +54,48 @@ export const CATEGORY_METADATA = {
     pillBg: 'bg-[#34A853]',
     tagText: 'text-emerald-800',
     description: 'Building custom classroom utilities, interactive learning modules, and teacher productivity tools with AI prompts.',
+    officialCourseUrl: OFFICIAL_BADGES_INFO_URL
+  },
+  [CAT_CITIZENS]: {
+    id: 'CITIZENS',
+    name: 'Empowering Digital Citizens',
+    shortName: 'Empowering Digital Citizens',
+    level: 'Digital Citizenship',
+    badgeColor: '#EA4335', // Google Red
+    bgSoft: 'bg-red-50',
+    borderSoft: 'border-red-200',
+    textColor: 'text-[#d93025]',
+    pillBg: 'bg-[#EA4335]',
+    tagText: 'text-red-800',
+    description: 'Guiding students to evaluate AI outputs critically, practice safe digital citizenship, and engage responsibly.',
+    officialCourseUrl: OFFICIAL_BADGES_INFO_URL
+  },
+  [CAT_MATERIALS]: {
+    id: 'MATERIALS',
+    name: 'Creating Classroom-Ready Instructional Materials',
+    shortName: 'Classroom-Ready Materials',
+    level: 'Instructional Design',
+    badgeColor: '#1967D2', // Deep Google Blue
+    bgSoft: 'bg-blue-50',
+    borderSoft: 'border-blue-200',
+    textColor: 'text-[#1967d2]',
+    pillBg: 'bg-[#1967D2]',
+    tagText: 'text-blue-800',
+    description: 'Designing structured, standards-aligned lesson guides, rubrics, and engaging classroom resources with Gemini.',
+    officialCourseUrl: OFFICIAL_BADGES_INFO_URL
+  },
+  [CAT_ADAPT]: {
+    id: 'ADAPT',
+    name: 'Adapt (Level) Materials',
+    shortName: 'Adapt (Level) Materials',
+    level: 'Differentiation & Access',
+    badgeColor: '#E37400', // Google Amber/Orange
+    bgSoft: 'bg-orange-50',
+    borderSoft: 'border-orange-200',
+    textColor: 'text-[#c26401]',
+    pillBg: 'bg-[#E37400]',
+    tagText: 'text-orange-800',
+    description: 'Differentiating reading levels, scaffolding multilingual support, and adapting instructional content for every learner.',
     officialCourseUrl: OFFICIAL_BADGES_INFO_URL
   }
 };

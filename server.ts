@@ -18,6 +18,9 @@ const DEFAULT_SHEET_CSV_URL =
 export const CAT_EDU = 'Introduction to Gemini for Education';
 export const CAT_NOTEBOOK = 'Introduction to Gemini for Notebook';
 export const CAT_CODING = 'Introduction to Vibe Coding with Gemini';
+export const CAT_CITIZENS = 'Empowering Digital Citizens';
+export const CAT_MATERIALS = 'Creating Classroom-Ready Instructional Materials';
+export const CAT_ADAPT = 'Adapt (Level) Materials';
 
 export interface BadgeRecord {
   id: string;
@@ -114,6 +117,15 @@ const fallbackDataset: BadgeRecord[] = [
 
 function classifyBadgeCategory(rawBadge: string): string {
   const lower = (rawBadge || '').toLowerCase().trim();
+  if (lower.includes('citizen') || lower.includes('empowering')) {
+    return CAT_CITIZENS;
+  }
+  if (lower.includes('classroom-ready') || lower.includes('creating classroom') || lower.includes('instructional material')) {
+    return CAT_MATERIALS;
+  }
+  if (lower.includes('adapt') || lower.includes('(level)')) {
+    return CAT_ADAPT;
+  }
   if (lower.includes('notebook') || lower.includes('note')) {
     return CAT_NOTEBOOK;
   }
@@ -165,11 +177,18 @@ function normalizeRows(rows: Record<string, string>[]): BadgeRecord[] {
         if (badgeKey) rawBadge = String(r[badgeKey] || '').trim();
       }
 
-      // If still empty, check any value containing "Introduction" or "Gemini"
+      // If still empty, check any value containing known badge keywords
       if (!rawBadge) {
         for (const v of vals) {
           const sv = String(v).trim();
-          if (sv.toLowerCase().includes('gemini') || sv.toLowerCase().includes('vibe')) {
+          const lsv = sv.toLowerCase();
+          if (
+            lsv.includes('gemini') ||
+            lsv.includes('vibe') ||
+            lsv.includes('citizen') ||
+            lsv.includes('classroom-ready') ||
+            lsv.includes('adapt')
+          ) {
             rawBadge = sv;
             break;
           }
@@ -324,7 +343,10 @@ app.get('/api/badges', async (req: Request, res: Response) => {
   const categoryCounts = {
     [CAT_EDU]: records.filter((r) => r.badge === CAT_EDU).length,
     [CAT_NOTEBOOK]: records.filter((r) => r.badge === CAT_NOTEBOOK).length,
-    [CAT_CODING]: records.filter((r) => r.badge === CAT_CODING).length
+    [CAT_CODING]: records.filter((r) => r.badge === CAT_CODING).length,
+    [CAT_CITIZENS]: records.filter((r) => r.badge === CAT_CITIZENS).length,
+    [CAT_MATERIALS]: records.filter((r) => r.badge === CAT_MATERIALS).length,
+    [CAT_ADAPT]: records.filter((r) => r.badge === CAT_ADAPT).length
   };
 
   // Top 4 per category
@@ -351,6 +373,9 @@ app.get('/api/badges', async (req: Request, res: Response) => {
       eduCount: number;
       notebookCount: number;
       codingCount: number;
+      citizensCount: number;
+      materialsCount: number;
+      adaptCount: number;
     }
   > = {};
 
@@ -362,7 +387,10 @@ app.get('/api/badges', async (req: Request, res: Response) => {
         uniqueEarners: new Set(),
         eduCount: 0,
         notebookCount: 0,
-        codingCount: 0
+        codingCount: 0,
+        citizensCount: 0,
+        materialsCount: 0,
+        adaptCount: 0
       };
     }
     const c = campusMap[r.department];
@@ -371,6 +399,9 @@ app.get('/api/badges', async (req: Request, res: Response) => {
     if (r.badge === CAT_EDU) c.eduCount += 1;
     if (r.badge === CAT_NOTEBOOK) c.notebookCount += 1;
     if (r.badge === CAT_CODING) c.codingCount += 1;
+    if (r.badge === CAT_CITIZENS) c.citizensCount += 1;
+    if (r.badge === CAT_MATERIALS) c.materialsCount += 1;
+    if (r.badge === CAT_ADAPT) c.adaptCount += 1;
   });
 
   const campusLeaderboard = Object.values(campusMap)
@@ -380,7 +411,10 @@ app.get('/api/badges', async (req: Request, res: Response) => {
       earnersCount: c.uniqueEarners.size,
       eduCount: c.eduCount,
       notebookCount: c.notebookCount,
-      codingCount: c.codingCount
+      codingCount: c.codingCount,
+      citizensCount: c.citizensCount,
+      materialsCount: c.materialsCount,
+      adaptCount: c.adaptCount
     }))
     .sort((a, b) => b.totalBadges - a.totalBadges);
 
@@ -446,6 +480,21 @@ app.get('/api/badges', async (req: Request, res: Response) => {
           name: CAT_CODING,
           count: categoryCounts[CAT_CODING],
           top4: getTop4ForCat(CAT_CODING)
+        },
+        citizens: {
+          name: CAT_CITIZENS,
+          count: categoryCounts[CAT_CITIZENS],
+          top4: getTop4ForCat(CAT_CITIZENS)
+        },
+        materials: {
+          name: CAT_MATERIALS,
+          count: categoryCounts[CAT_MATERIALS],
+          top4: getTop4ForCat(CAT_MATERIALS)
+        },
+        adapt: {
+          name: CAT_ADAPT,
+          count: categoryCounts[CAT_ADAPT],
+          top4: getTop4ForCat(CAT_ADAPT)
         }
       },
       campusLeaderboard

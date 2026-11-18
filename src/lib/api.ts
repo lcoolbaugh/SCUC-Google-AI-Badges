@@ -1,7 +1,16 @@
 import Papa from 'papaparse';
 import confetti from 'canvas-confetti';
 import { ApiResponse, BadgeRecord, DashboardStats, EarnerProfile } from '../types';
-import { CAT_CODING, CAT_EDU, CAT_NOTEBOOK, DEFAULT_SHEET_CSV_URL, FALLBACK_RECORDS } from './constants';
+import {
+  CAT_ADAPT,
+  CAT_CITIZENS,
+  CAT_CODING,
+  CAT_EDU,
+  CAT_MATERIALS,
+  CAT_NOTEBOOK,
+  DEFAULT_SHEET_CSV_URL,
+  FALLBACK_RECORDS
+} from './constants';
 
 export async function fetchDashboardData(
   sheetUrl = DEFAULT_SHEET_CSV_URL,
@@ -111,7 +120,14 @@ function clientNormalize(rows: Record<string, string>[]): BadgeRecord[] {
       if (!rawBadge) {
         for (const v of vals) {
           const sv = String(v).trim();
-          if (sv.toLowerCase().includes('gemini') || sv.toLowerCase().includes('vibe')) {
+          const lsv = sv.toLowerCase();
+          if (
+            lsv.includes('gemini') ||
+            lsv.includes('vibe') ||
+            lsv.includes('citizen') ||
+            lsv.includes('classroom-ready') ||
+            lsv.includes('adapt')
+          ) {
             rawBadge = sv;
             break;
           }
@@ -152,7 +168,13 @@ function clientNormalize(rows: Record<string, string>[]): BadgeRecord[] {
 
       const lower = (rawBadge || '').toLowerCase();
       let badge = CAT_EDU;
-      if (lower.includes('notebook') || lower.includes('note')) {
+      if (lower.includes('citizen') || lower.includes('empowering')) {
+        badge = CAT_CITIZENS;
+      } else if (lower.includes('classroom-ready') || lower.includes('creating classroom') || lower.includes('instructional material')) {
+        badge = CAT_MATERIALS;
+      } else if (lower.includes('adapt') || lower.includes('(level)')) {
+        badge = CAT_ADAPT;
+      } else if (lower.includes('notebook') || lower.includes('note')) {
         badge = CAT_NOTEBOOK;
       } else if (lower.includes('vibe') || lower.includes('coding') || lower.includes('code') || lower.includes('dev')) {
         badge = CAT_CODING;
@@ -232,6 +254,9 @@ function buildApiResponse(
       eduCount: number;
       notebookCount: number;
       codingCount: number;
+      citizensCount: number;
+      materialsCount: number;
+      adaptCount: number;
     }
   > = {};
 
@@ -243,7 +268,10 @@ function buildApiResponse(
         uniqueEarners: new Set(),
         eduCount: 0,
         notebookCount: 0,
-        codingCount: 0
+        codingCount: 0,
+        citizensCount: 0,
+        materialsCount: 0,
+        adaptCount: 0
       };
     }
     const c = campusMap[r.department];
@@ -252,6 +280,9 @@ function buildApiResponse(
     if (r.badge === CAT_EDU) c.eduCount += 1;
     if (r.badge === CAT_NOTEBOOK) c.notebookCount += 1;
     if (r.badge === CAT_CODING) c.codingCount += 1;
+    if (r.badge === CAT_CITIZENS) c.citizensCount += 1;
+    if (r.badge === CAT_MATERIALS) c.materialsCount += 1;
+    if (r.badge === CAT_ADAPT) c.adaptCount += 1;
   });
 
   const campusLeaderboard = Object.values(campusMap)
@@ -261,7 +292,10 @@ function buildApiResponse(
       earnersCount: c.uniqueEarners.size,
       eduCount: c.eduCount,
       notebookCount: c.notebookCount,
-      codingCount: c.codingCount
+      codingCount: c.codingCount,
+      citizensCount: c.citizensCount,
+      materialsCount: c.materialsCount,
+      adaptCount: c.adaptCount
     }))
     .sort((a, b) => b.totalBadges - a.totalBadges);
 
@@ -308,6 +342,21 @@ function buildApiResponse(
         name: CAT_CODING,
         count: records.filter((r) => r.badge === CAT_CODING).length,
         top4: getTop4(CAT_CODING)
+      },
+      citizens: {
+        name: CAT_CITIZENS,
+        count: records.filter((r) => r.badge === CAT_CITIZENS).length,
+        top4: getTop4(CAT_CITIZENS)
+      },
+      materials: {
+        name: CAT_MATERIALS,
+        count: records.filter((r) => r.badge === CAT_MATERIALS).length,
+        top4: getTop4(CAT_MATERIALS)
+      },
+      adapt: {
+        name: CAT_ADAPT,
+        count: records.filter((r) => r.badge === CAT_ADAPT).length,
+        top4: getTop4(CAT_ADAPT)
       }
     },
     campusLeaderboard

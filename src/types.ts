@@ -1,7 +1,10 @@
 export type BadgeCategoryType =
   | 'Introduction to Gemini for Education'
   | 'Introduction to Gemini for Notebook'
-  | 'Introduction to Vibe Coding with Gemini';
+  | 'Introduction to Vibe Coding with Gemini'
+  | 'Empowering Digital Citizens'
+  | 'Creating Classroom-Ready Instructional Materials'
+  | 'Adapt (Level) Materials';
 
 export interface BadgeRecord {
   id: string;
@@ -34,6 +37,9 @@ export interface CampusLeaderboardItem {
   eduCount: number;
   notebookCount: number;
   codingCount: number;
+  citizensCount: number;
+  materialsCount: number;
+  adaptCount: number;
 }
 
 export interface EarnerBadgeDetail {
@@ -60,6 +66,9 @@ export interface DashboardStats {
     edu: CategoryInfo;
     notebook: CategoryInfo;
     coding: CategoryInfo;
+    citizens: CategoryInfo;
+    materials: CategoryInfo;
+    adapt: CategoryInfo;
   };
   campusLeaderboard: CampusLeaderboardItem[];
 }
